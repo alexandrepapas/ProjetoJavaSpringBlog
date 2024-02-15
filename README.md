@@ -1,3 +1,5 @@
+API BLOG-
+
 O projeto é uma API de blog desenvolvida em Java, utilizando o framework Spring Boot e o gerenciador de dependências Maven. A aplicação permite que os usuários criem posts.
 Aqui estão os principais componentes do projeto:
 
