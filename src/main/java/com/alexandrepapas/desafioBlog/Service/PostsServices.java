@@ -7,7 +7,10 @@ import com.alexandrepapas.desafioBlog.dtos.PostsDTO;
 import com.alexandrepapas.desafioBlog.model.Autor;
 import com.alexandrepapas.desafioBlog.model.Posts;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class PostsServices {
@@ -25,8 +28,7 @@ public class PostsServices {
         if (postsDTO.getAutorId() == null) {
             throw new IllegalArgumentException("O id do autor é obrigatório");
         }
-        Autor autor = autorRepository.findById(postsDTO.getAutorId())
-                .orElseThrow(() -> new ResourceNotFoundException("Autor não Encontrado"));
+        Autor autor = autorRepository.findById(postsDTO.getAutorId()).orElseThrow(() -> new ResourceNotFoundException("Autor não Encontrado"));
 
         Posts posts = new Posts();
         posts.setTitulo(postsDTO.getTitulo());
@@ -35,5 +37,37 @@ public class PostsServices {
 
         return postsRepository.save(posts);
     }
+
+    public Posts editarPost(Long id, PostsDTO postsDTO) {
+        Posts posts = postsRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Post não encontrado"));
+
+        if (postsDTO.getTitulo() != null) {
+            posts.setTitulo(postsDTO.getTitulo());
+        }
+
+        if (postsDTO.getConteudo() != null) {
+            posts.setConteudo(postsDTO.getConteudo());
+        }
+
+        if (postsDTO.getAutorId() != null) {
+            Autor autor = autorRepository.findById(postsDTO.getAutorId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Autor não encontrado"));
+            posts.setAutor(autor);
+        }
+
+        return postsRepository.save(posts);
+    }
+
+
+    public List<Posts> buscarPostsIdOrdem(Long userId, boolean ordemReversa) {
+        Sort sort = Sort.by(ordemReversa ? Sort.Direction.ASC : Sort.Direction.DESC, "dataCriacao");
+        if (userId != null) {
+            return postsRepository.findByAutorId(userId, sort);
+        } else {
+            return postsRepository.findAll(sort);
+        }
+    }
+
 
 }

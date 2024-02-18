@@ -1,6 +1,10 @@
 package com.alexandrepapas.desafioBlog.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
+
 @Entity
 public class Posts {
     @Id
@@ -14,6 +18,8 @@ public class Posts {
     private String titulo;
 
     private String conteudo;
+    @JsonFormat(pattern="dd-MM-yyyy HH:mm:ss")
+    private LocalDateTime dataCriacao = LocalDateTime.now();
 
 
     public Long getId() {
@@ -47,4 +53,14 @@ public class Posts {
     public void setConteudo(String conteudo) {
         this.conteudo = conteudo;
     }
+
+    public LocalDateTime getDataCriacao() {
+        return dataCriacao;
+    }
+
+
+    public void setDataCriacao(LocalDateTime dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
 }
+
