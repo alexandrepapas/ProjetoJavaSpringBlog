@@ -59,7 +59,6 @@ public class PostsServices {
         return postsRepository.save(posts);
     }
 
-
     public List<Posts> buscarPostsIdOrdem(Long userId, boolean ordemReversa) {
         Sort sort = Sort.by(ordemReversa ? Sort.Direction.ASC : Sort.Direction.DESC, "dataCriacao");
         if (userId != null) {
@@ -69,5 +68,15 @@ public class PostsServices {
         }
     }
 
+    public Posts buscarPostPorId(Long id) {
+        return postsRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Post não encontrado"));
+    }
+
+    public void deletarPost(Long id) {
+        Posts posts = postsRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Post não encontrado"));
+        postsRepository.delete(posts);
+    }
 
 }

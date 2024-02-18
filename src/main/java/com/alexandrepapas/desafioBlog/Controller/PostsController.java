@@ -49,4 +49,16 @@ public class PostsController {
         return ResponseEntity.ok().body(posts);
     }
 
+    @GetMapping("/buscar/{id}")
+    public ResponseEntity<Posts> buscarPostId(@PathVariable Long id) {
+        Posts posts = postsServices.buscarPostPorId(id);
+        return ResponseEntity.ok().body(posts);
+    }
+
+    @DeleteMapping("/deletar/{id}")
+    public ResponseEntity<?> deletarPost(@PathVariable Long id) {
+        postsServices.deletarPost(id);
+        return ResponseEntity.ok().build();
+    }
+
 }
